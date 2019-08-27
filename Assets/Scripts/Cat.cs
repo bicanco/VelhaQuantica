@@ -5,16 +5,19 @@ using UnityEngine;
 public class Cat: MonoBehaviour
 {
     private int index;
+    private SpriteRenderer sprite;
     public Sprite[] sprites = new Sprite[2];
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+
+    void Awake(){
+        this.sprite = this.transform.Find("Sprite").GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void SetSprite(int index) {
+        this.sprite.sprite = this.sprites[index];
     }
+
+    public void SetIndex(int index){
+        this.index = index;
+    }
+
 }
