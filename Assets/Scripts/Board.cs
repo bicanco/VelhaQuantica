@@ -18,13 +18,7 @@ public class Board : MonoBehaviour
     public void connect(int i, int j){
         graph.addEdge(i,j);
     }
-    public void VerifyCicle() {
-        // for(int i = 0 ; i < 9; i++){
-        //     for(int j= 0 ;j <9; j++){
-        //         print(i);
-        //         print(j);
-        //         print(graph.graph[i,j]);
-        //     }
-        // }
+    public void VerifyCicle(int vertex) {
+        print(graph.findCicles(vertex));
     }
 }
