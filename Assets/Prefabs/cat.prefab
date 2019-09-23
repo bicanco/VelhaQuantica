@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 2503169472721526818}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
   m_Children:
   - {fileID: 8053360268390802803}
   m_Father: {fileID: 0}
@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprites:
-  - {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 21300000, guid: 3363e0bfd2114974bbaf849c4aefb801, type: 3}
+  - {fileID: 21300000, guid: 286e777b64869b7438c7b268eccc11d4, type: 3}
 --- !u!1 &3159112732736123682
 GameObject:
   m_ObjectHideFlags: 0
