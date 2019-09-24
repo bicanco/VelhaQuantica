@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     private bool playerOfTurn = true;
     private bool plays = false;
     private int turn = 0;
+    private bool collapse = false;
 
     void Start()
     {
@@ -27,8 +28,6 @@ public class GameManager : MonoBehaviour
     public int GetPlayersTurn(){
         if(plays)
             playerOfTurn = !playerOfTurn;
-        // bool temp = this.playersTurn;
-        // this.playersTurn = !this.playersTurn;
         return playerOfTurn ? 1 : 0;
     }
 
@@ -36,5 +35,14 @@ public class GameManager : MonoBehaviour
         if(plays)
             turn++;
         return turn;
+    }
+
+    public void SetCollapse(){
+        collapse = true;
+        plays = !plays;
+    }
+
+    public bool GetCollapse(){
+        return collapse;
     }
 }

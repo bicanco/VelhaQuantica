@@ -16,4 +16,27 @@ public class Graph
         graph[vertex1,vertex2] = false;
         graph[vertex2,vertex1] = false;
     }
+
+    private bool dfs(int v, bool[] visited, int parent){
+        visited[v] = true;
+
+        for(int i = 0; i < graph.GetLength(0); i++){
+            if(graph[v, i]){
+                if(!visited[i]){
+                    if(dfs(i, visited, v)){
+                        return true;
+                    }
+                }else if( parent != i){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public bool findCycles(int vertex){
+        bool[] visited = new bool[graph.GetLength(0)];
+        return dfs(vertex, visited, -1);
+    }      
 }

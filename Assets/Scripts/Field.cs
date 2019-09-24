@@ -7,8 +7,8 @@ public class Field : MonoBehaviour
 {
     public Cat cat;
     private GameManager gameManager;
-    // private static Cat[] cats = new Cat[2];
-    private static int[] cats = new int[2];
+    private static Cat[] cats = new Cat[2];
+    private static int[] vertexes = new int[2];
     private static Board board;
     private int index;
     void Start()
@@ -19,13 +19,31 @@ public class Field : MonoBehaviour
     }
 
     private void OnMouseDown() {
+        if(gameManager.GetCollapse()) {
+            if( vertexes[0] == index || vertexes[1] == index ) {
+                gameManager.GetPlays();
+                Cat[] cats = this.transform.GetComponentsInChildren<Cat>();
+                // if( ArrayUtility.IndexOf(cats, cats[0]) == -1) {
+                    // Cat.RemoveBrothers(cats[0], cats[1]);
+                    board.graph.removeEdge(vertexes[0], vertexes[1]);
+                    cats[1].Conquer();
+                // }else{
+                //     Cat.RemoveBrothers(cats[0], cats[1]);
+                //     board.graph.removeEdge(vertexes[0], vertexes[1]);
+                //     cats[1].Conquer();
+                // }
+            } else {
+                print("Não é possível!");
+            }
+            return;
+        }
         int aux = gameManager.GetPlays();
-        Cat.Instantiate(this.cat,this.transform.Find("Cats").transform, gameManager.GetPlayersTurn(), gameManager.GetTurn());
-        cats[aux] = index;
+        cats[aux] = Cat.Instantiate(this.cat,this.transform.Find("Cats").transform, gameManager.GetPlayersTurn(), gameManager.GetTurn());
+        vertexes[aux] = index;
         if(aux == 0){
-            board.connect(cats[0],cats[1]);
-            // Cat.SetBrothers(cats[0],cats[1]);
-            board.VerifyCicle();
+            board.connect(vertexes[0],vertexes[1]);
+            Cat.SetBrothers(cats[0],cats[1]);
+            board.VerifyCycle(index);
         }
     }
     

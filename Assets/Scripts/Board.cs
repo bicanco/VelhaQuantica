@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    private Graph graph;
+    public Graph graph;
+    private GameManager gameManager;
+
     void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();     
         graph = new Graph();
     }
 
@@ -15,16 +18,12 @@ public class Board : MonoBehaviour
         
     }
 
-    public void connect(int i, int j){
+    public void connect(int i, int j) {
         graph.addEdge(i,j);
     }
-    public void VerifyCicle() {
-        // for(int i = 0 ; i < 9; i++){
-        //     for(int j= 0 ;j <9; j++){
-        //         print(i);
-        //         print(j);
-        //         print(graph.graph[i,j]);
-        //     }
-        // }
+    public void VerifyCycle(int vertex) {
+        if(graph.findCycles(vertex)) {
+            gameManager.SetCollapse();
+        }
     }
 }
