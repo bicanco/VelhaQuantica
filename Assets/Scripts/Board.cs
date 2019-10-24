@@ -22,7 +22,7 @@ public class Board : MonoBehaviour
         graph.addEdge(i,j);
     }
     public void VerifyCycle(int vertex) {
-        if(graph.findCycles(vertex)) {
+        if(graph.findCycle(vertex)) {
             gameManager.SetCollapse();
         }
     }
