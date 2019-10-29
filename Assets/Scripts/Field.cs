@@ -10,7 +10,8 @@ public class Field : MonoBehaviour
     private static Cat[] cats = new Cat[2];
     private static int[] vertexes = new int[2];
     private static Board board;
-    private int index;
+    private bool alreadyCollapsed = false;
+    public int index;
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -24,9 +25,9 @@ public class Field : MonoBehaviour
                 gameManager.GetPlays();
                 Cat[] cats = this.transform.GetComponentsInChildren<Cat>();
                 // if( ArrayUtility.IndexOf(cats, cats[0]) == -1) {
-                    // Cat.RemoveBrothers(cats[0], cats[1]);
-                    board.graph.removeEdge(vertexes[0], vertexes[1]);
+                    cats[1].brother.RemoveBrother();
                     cats[1].Conquer();
+                    gameManager.EndCollapse();
                 // }else{
                 //     Cat.RemoveBrothers(cats[0], cats[1]);
                 //     board.graph.removeEdge(vertexes[0], vertexes[1]);
@@ -36,15 +37,31 @@ public class Field : MonoBehaviour
                 print("Não é possível!");
             }
             return;
+        } else if(PossibleToPlay()) {
+            int aux = gameManager.GetPlays();
+            cats[aux] = Cat.Instantiate(this.cat,this.transform.Find("Cats").transform, gameManager.GetPlayersTurn(), gameManager.GetTurn());
+            vertexes[aux] = index;
+            if(aux == 0){
+                board.connect(vertexes[0],vertexes[1]);
+                Cat.SetBrothers(cats[0],cats[1]);
+                board.VerifyCycle(index);
+                cats = new Cat[2];
+            }
+        } else {
+            print("Já jogou aqui!");
         }
-        int aux = gameManager.GetPlays();
-        cats[aux] = Cat.Instantiate(this.cat,this.transform.Find("Cats").transform, gameManager.GetPlayersTurn(), gameManager.GetTurn());
-        vertexes[aux] = index;
-        if(aux == 0){
-            board.connect(vertexes[0],vertexes[1]);
-            Cat.SetBrothers(cats[0],cats[1]);
-            board.VerifyCycle(index);
+    }
+
+    private bool PossibleToPlay() {
+        bool samefield = false;
+        if(cats[1] != null) {
+            samefield = cats[1].transform.parent.parent.gameObject == this.gameObject;
         }
+        return !alreadyCollapsed && !samefield;
+    }
+
+    public void SetAlreadyCollapsed() {
+        alreadyCollapsed = true;
     }
     
 }

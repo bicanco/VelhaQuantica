@@ -13,23 +13,23 @@ public class Cat: MonoBehaviour
     void Awake(){
         sprite = this.transform.Find("Sprite").GetComponent<SpriteRenderer>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-    }
-
-    void Start(){
         board = GameObject.Find("board").GetComponent<Board>();
     }
 
+    void Start(){
+    }
+
     public void Conquer() {
+        Field parent = this.transform.parent.parent.GetComponent<Field>();
+        parent.SetAlreadyCollapsed();
         foreach (Cat cat in this.transform.parent.GetComponentsInChildren<Cat>())
         {
             if(cat.gameObject != this.gameObject) {
-                Object.Destroy(cat.gameObject);
-                try{
+                if(cat.brother != null){
+                    cat.brother.RemoveBrother();
                     cat.brother.Conquer();
-                } catch(System.Exception e){
-                    gameManager.EndCollapse();
-                    continue;
                 }
+                Object.Destroy(cat.gameObject);
             }
         }
     }
@@ -47,9 +47,14 @@ public class Cat: MonoBehaviour
         cat2.brother = cat1;
     }
 
-    public static void RemoveBrothers(Cat cat1, Cat cat2) {
-        cat1.brother = null;
-        cat2.brother = null;
+    public void RemoveBrother() {
+        if(brother != null){
+            board.graph.removeEdge(
+                this.gameObject.transform.parent.parent.GetComponent<Field>().index,
+                brother.gameObject.transform.parent.parent.GetComponent<Field>().index
+            );
+        }
+        brother = null;
     }
     public static Cat Instantiate(Cat cat, Transform position, int sprite, int index){
         Cat temp = Instantiate(cat, position, false);
