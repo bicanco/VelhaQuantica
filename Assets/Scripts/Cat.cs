@@ -4,13 +4,15 @@ public class Cat: MonoBehaviour
 {
     private int index;
     private SpriteRenderer sprite;
+    private GameManager gameManager;
     public Cat brother;
     private Board board;
     public Sprite[] sprites = new Sprite[2];
 
 
     void Awake(){
-        this.sprite = this.transform.Find("Sprite").GetComponent<SpriteRenderer>();
+        sprite = this.transform.Find("Sprite").GetComponent<SpriteRenderer>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     void Start(){
@@ -25,6 +27,7 @@ public class Cat: MonoBehaviour
                 try{
                     cat.brother.Conquer();
                 } catch(System.Exception e){
+                    gameManager.EndCollapse();
                     continue;
                 }
             }

@@ -42,6 +42,17 @@ public class GameManager : MonoBehaviour
         plays = !plays;
     }
 
+    public void EndCollapse() {
+        if(EndGame()){
+            // go to final scene
+            print("end");
+        }
+        collapse = false;
+    }
+
+    private bool EndGame() {
+        return true;
+    }
     public bool GetCollapse(){
         return collapse;
     }
