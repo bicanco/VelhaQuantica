@@ -11,6 +11,7 @@ public class Field : MonoBehaviour
     private static int[] vertexes = new int[2];
     private static Board board;
     private bool alreadyCollapsed = false;
+    private int conquerer;
     public int index;
     void Start()
     {
@@ -60,8 +61,12 @@ public class Field : MonoBehaviour
         return !alreadyCollapsed && !samefield;
     }
 
-    public void SetAlreadyCollapsed() {
+    public void SetAlreadyCollapsed(int player) {
+        conquerer = player;
         alreadyCollapsed = true;
     }
-    
+
+    public int GetConquerer() {
+        return alreadyCollapsed ? conquerer : -1;
+    }   
 }

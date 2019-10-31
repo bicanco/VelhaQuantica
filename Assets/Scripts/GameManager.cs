@@ -9,10 +9,11 @@ public class GameManager : MonoBehaviour
     private bool plays = false;
     private int turn = 0;
     private bool collapse = false;
+    private Board board;
 
     void Start()
     {
-        
+        board = GameObject.Find("board").GetComponent<Board>();
     }
 
     void Update()
@@ -43,16 +44,20 @@ public class GameManager : MonoBehaviour
     }
 
     public void EndCollapse() {
-        if(EndGame()){
-            // go to final scene
-            print("end");
+        Board.BoardState state = board.GetState();
+        if(state == Board.BoardState.Draw){
+            // go to draw scene
+            print("draw");
+        }else if(state == Board.BoardState.BlackVictory){
+            // go to victory scene
+            print("victory black");
+        }else if(state == Board.BoardState.OrangeVictory){
+            // go to victory scene
+            print("victory orange");
         }
         collapse = false;
     }
 
-    private bool EndGame() {
-        return true;
-    }
     public bool GetCollapse(){
         return collapse;
     }

@@ -2,6 +2,7 @@
 
 public class Cat: MonoBehaviour
 {
+    private int owner;
     private int index;
     private SpriteRenderer sprite;
     private GameManager gameManager;
@@ -21,7 +22,7 @@ public class Cat: MonoBehaviour
 
     public void Conquer() {
         Field parent = this.transform.parent.parent.GetComponent<Field>();
-        parent.SetAlreadyCollapsed();
+        parent.SetAlreadyCollapsed(owner);
         foreach (Cat cat in this.transform.parent.GetComponentsInChildren<Cat>())
         {
             if(cat.gameObject != this.gameObject) {
@@ -35,6 +36,7 @@ public class Cat: MonoBehaviour
     }
 
     public void SetSprite(int index) {
+        owner = index;
         this.sprite.sprite = this.sprites[index];
     }
 
