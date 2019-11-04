@@ -4,15 +4,17 @@ public class Cat: MonoBehaviour
 {
     private int owner;
     private int index;
-    private SpriteRenderer sprite;
+    private SpriteRenderer catSprite;
+    private SpriteRenderer numberSprite;
     private GameManager gameManager;
     public Cat brother;
     private Board board;
-    public Sprite[] sprites = new Sprite[2];
-
+    public Sprite[] catSprites = new Sprite[2];
+    public Sprite[] numberSprites = new Sprite[36];
 
     void Awake(){
-        sprite = this.transform.Find("Sprite").GetComponent<SpriteRenderer>();
+        catSprite = this.transform.Find("catSprite").GetComponent<SpriteRenderer>();
+        numberSprite = this.transform.Find("numberSprite").GetComponent<SpriteRenderer>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         board = GameObject.Find("board").GetComponent<Board>();
     }
@@ -37,11 +39,13 @@ public class Cat: MonoBehaviour
 
     public void SetSprite(int index) {
         owner = index;
-        this.sprite.sprite = this.sprites[index];
+        this.catSprite.sprite = this.catSprites[index];
     }
 
     public void SetIndex(int index){
         this.index = index;
+        this.numberSprite.sprite = this.numberSprites[index-1];
+        
     }
 
     public static void SetBrothers(Cat cat1, Cat cat2) {
