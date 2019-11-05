@@ -7,16 +7,19 @@ public class Field : MonoBehaviour
 {
     public Cat cat;
     private GameManager gameManager;
+    private TemporaryPosition temporaryPositions;
     private static Cat[] cats = new Cat[2];
     private static int[] vertexes = new int[2];
     private static Board board;
     private bool alreadyCollapsed = false;
     private int conquerer;
+    private int next = 0;
     public int index;
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         board =  this.transform.GetComponentInParent<Board>();
+        temporaryPositions = this.GetComponentInChildren<TemporaryPosition>();
         index = ArrayUtility.IndexOf(board.GetComponentsInChildren<Field>(),this);
     }
 
@@ -25,6 +28,7 @@ public class Field : MonoBehaviour
             if( vertexes[0] == index || vertexes[1] == index ) {
                 gameManager.GetPlays();
                 Cat[] cats = this.transform.GetComponentsInChildren<Cat>();
+                transform.Find("TemporaryPositions").gameObject.SetActive(false);
                 // if( ArrayUtility.IndexOf(cats, cats[0]) == -1) {
                     cats[1].brother.RemoveBrother();
                     cats[1].Conquer();
@@ -40,8 +44,12 @@ public class Field : MonoBehaviour
             return;
         } else if(PossibleToPlay()) {
             int aux = gameManager.GetPlays();
-            cats[aux] = Cat.Instantiate(this.cat,this.transform.Find("Cats").transform, gameManager.GetPlayersTurn(), gameManager.GetTurn());
+            int playerTurn = gameManager.GetPlayersTurn();
+            int turn = gameManager.GetTurn();
+            cats[aux] = Cat.Instantiate(this.cat,this.transform.Find("Cats").transform, playerTurn, turn);
             vertexes[aux] = index;
+            temporaryPositions.SetIndex(turn, next);
+            temporaryPositions.SetSprite(playerTurn, next++);
             if(aux == 0){
                 board.connect(vertexes[0],vertexes[1]);
                 Cat.SetBrothers(cats[0],cats[1]);
