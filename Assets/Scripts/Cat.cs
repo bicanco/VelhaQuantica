@@ -9,12 +9,14 @@ public class Cat: MonoBehaviour
     // private SpriteRenderer catSprite;
     // private SpriteRenderer numberSprite;
     private GameManager gameManager;
+    private Field parent;
     public Cat brother;
     private Board board;
     public Sprite[] catSprites = new Sprite[2];
     public Sprite[] numberSprites = new Sprite[36];
 
     void Awake(){
+        parent = this.transform.parent.parent.GetComponent<Field>();
         catSprite = this.transform.Find("catSprite").gameObject;
         numberSprite = this.transform.Find("numberSprite").gameObject;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -29,8 +31,8 @@ public class Cat: MonoBehaviour
     public void Conquer() {
         catSprite.SetActive(true);
         numberSprite.SetActive(true);
-        Field parent = this.transform.parent.parent.GetComponent<Field>();
         parent.SetAlreadyCollapsed(owner);
+        parent.DeactivateTP();
         foreach (Cat cat in this.transform.parent.GetComponentsInChildren<Cat>())
         {
             if(cat.gameObject != this.gameObject) {
@@ -44,11 +46,13 @@ public class Cat: MonoBehaviour
     }
 
     public void SetSprite(int index) {
+        parent.GetNext().transform.GetChild(0).GetComponent<SpriteRenderer>().sprite =  this.catSprites[index];
         owner = index;
         this.catSprite.GetComponent<SpriteRenderer>().sprite = this.catSprites[index];
     }
 
     public void SetIndex(int index){
+        parent.GetNext().transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = this.numberSprites[index-1];
         this.index = index;
         this.numberSprite.GetComponent<SpriteRenderer>().sprite = this.numberSprites[index-1];
         

@@ -48,8 +48,9 @@ public class Field : MonoBehaviour
             int turn = gameManager.GetTurn();
             cats[aux] = Cat.Instantiate(this.cat,this.transform.Find("Cats").transform, playerTurn, turn);
             vertexes[aux] = index;
-            temporaryPositions.SetIndex(turn, next);
-            temporaryPositions.SetSprite(playerTurn, next++);
+            UpdateNext();
+            // temporaryPositions.SetIndex(turn, next);
+            // temporaryPositions.SetSprite(playerTurn, next++);
             if(aux == 0){
                 board.connect(vertexes[0],vertexes[1]);
                 Cat.SetBrothers(cats[0],cats[1]);
@@ -76,5 +77,17 @@ public class Field : MonoBehaviour
 
     public int GetConquerer() {
         return alreadyCollapsed ? conquerer : -1;
-    }   
+    }
+
+    public GameObject GetNext() {
+        return transform.GetChild(1).GetChild(next).gameObject;
+    }
+
+    private void UpdateNext() {
+        next++;
+    }
+
+    public void DeactivateTP() {
+        temporaryPositions.gameObject.SetActive(false);
+    }
 }
