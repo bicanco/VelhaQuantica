@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -46,14 +47,14 @@ public class GameManager : MonoBehaviour
     public void EndCollapse() {
         Board.BoardState state = board.GetState();
         if(state == Board.BoardState.Draw){
-            // go to draw scene
             print("draw");
+            SceneManager.LoadScene(3);
         }else if(state == Board.BoardState.BlackVictory){
-            // go to victory scene
             print("victory black");
+            SceneManager.LoadScene(4);
         }else if(state == Board.BoardState.OrangeVictory){
-            // go to victory scene
             print("victory orange");
+            SceneManager.LoadScene(5);
         }
         collapse = false;
     }
