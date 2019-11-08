@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
+	public void Home ()
+	{
+		SceneManager.LoadScene(0);
+
+	}
 
 	public void Jogar ()
 	{
@@ -12,9 +17,10 @@ public class Menu : MonoBehaviour
 
 	}
 
-	public void Home ()
+
+	public void Tutorial ()
 	{
-		SceneManager.LoadScene(0);
+		SceneManager.LoadScene(2);
 
 	}
 
