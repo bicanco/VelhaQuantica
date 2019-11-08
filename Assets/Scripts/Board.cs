@@ -101,8 +101,8 @@ public class Board : MonoBehaviour
             return BoardState.OrangeVictory;
         }else if(points[0] != 0){
             return BoardState.Draw;
-        // se só houver um campo possível de jogar, também é empate
-        }else if(CountCollapsed() == 8){
+        // se houver zero ou um campos possíveis de se jogar, também é empate
+        }else if(CountCollapsed() >= 8){
             return BoardState.Draw;
         }else{
             return BoardState.NotFinished;
