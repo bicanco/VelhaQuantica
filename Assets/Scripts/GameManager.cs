@@ -48,14 +48,22 @@ public class GameManager : MonoBehaviour
     public void EndCollapse() {
         Board.BoardState state = board.GetState();
         //Verificando se há empate, vitória ou não acabou o jogo
-        if(state == Board.BoardState.Draw){
+        StartCoroutine(ChangeScene(state));
+        collapse = false;
+    }
+
+    // Esperando um tempo para mudar de cena se for necessário
+    private IEnumerator ChangeScene(Board.BoardState state) {
+       if(state == Board.BoardState.Draw){
+            yield return new WaitForSeconds(1f);
             SceneManager.LoadScene(3);
         }else if(state == Board.BoardState.BlackVictory){
+            yield return new WaitForSeconds(1f);
             SceneManager.LoadScene(4);
         }else if(state == Board.BoardState.OrangeVictory){
+            yield return new WaitForSeconds(1f);
             SceneManager.LoadScene(5);
         }
-        collapse = false;
     }
 
     // obtendo se há um calapso pronto para acontecer
