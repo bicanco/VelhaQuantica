@@ -36,6 +36,17 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    // Contando número de campos que já colapsaram
+    private int CountCollapsed() {
+        int count = 0;
+        foreach(Field field in transform.GetComponentsInChildren<Field>()){
+            if(field.GetConquerer() != -1){
+                count++;
+            }
+        }
+        return count;
+    }
+
     // Verificando vitória, derrota ou jogo não finalizado
     public BoardState GetState() {
         Field[] fields = this.GetComponentsInChildren<Field>();
@@ -89,6 +100,9 @@ public class Board : MonoBehaviour
         }else if(points[0] < points[1]){
             return BoardState.OrangeVictory;
         }else if(points[0] != 0){
+            return BoardState.Draw;
+        // se só houver um campo possível de jogar, também é empate
+        }else if(CountCollapsed() == 8){
             return BoardState.Draw;
         }else{
             return BoardState.NotFinished;

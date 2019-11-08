@@ -60,10 +60,11 @@ public class Field : MonoBehaviour
             // se for uma posição válida para colapsar
             if( vertexes[0] == index || vertexes[1] == index ) {
                 gameManager.GetPlays();
-                Cat[] cats = this.transform.GetComponentsInChildren<Cat>();
+                Cat[] temp = this.transform.GetComponentsInChildren<Cat>();
+                int toCollapse = temp.Length - 1;
                 transform.Find("TemporaryPositions").gameObject.SetActive(false);
-                cats[1].brother.RemoveBrother();
-                cats[1].Conquer();
+                temp[toCollapse].brother.RemoveBrother();
+                temp[toCollapse].Conquer();
                 gameManager.EndCollapse();
             } else {
                 showbalaoinvalida();

@@ -25,8 +25,9 @@ public class Cat: MonoBehaviour
         parent.DeactivateTP();
 
         // Propagando o colapso dos gatos conectados
-        foreach (Cat cat in this.transform.parent.GetComponentsInChildren<Cat>())
-        {
+        Transform cats = parent.transform.GetChild(0);
+        for(int i = 0; i < cats.childCount; i ++){
+            Cat cat = cats.GetChild(i).GetComponent<Cat>();
             if(cat.gameObject != this.gameObject) {
                 if(cat.brother != null){
                     cat.brother.RemoveBrother();
