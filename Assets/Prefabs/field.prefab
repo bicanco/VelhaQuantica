@@ -195,6 +195,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cat: {fileID: 915914458646843509, guid: d569e690151407a44952ee216c96e3a6, type: 3}
   index: 0
+  glow: {fileID: 21300000, guid: 544c8302926abe64e84be8493967852e, type: 3}
 --- !u!1001 &108913933913507324
 PrefabInstance:
   m_ObjectHideFlags: 0

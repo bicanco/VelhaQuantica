@@ -15,6 +15,8 @@ public class Field : MonoBehaviour
     private int conquerer;
     private int next = 0;
     public int index;
+    public Sprite glow;
+
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -29,15 +31,9 @@ public class Field : MonoBehaviour
                 gameManager.GetPlays();
                 Cat[] cats = this.transform.GetComponentsInChildren<Cat>();
                 transform.Find("TemporaryPositions").gameObject.SetActive(false);
-                // if( ArrayUtility.IndexOf(cats, cats[0]) == -1) {
-                    cats[1].brother.RemoveBrother();
-                    cats[1].Conquer();
-                    gameManager.EndCollapse();
-                // }else{
-                //     Cat.RemoveBrothers(cats[0], cats[1]);
-                //     board.graph.removeEdge(vertexes[0], vertexes[1]);
-                //     cats[1].Conquer();
-                // }
+                cats[1].brother.RemoveBrother();
+                cats[1].Conquer();
+                gameManager.EndCollapse();
             } else {
                 print("Não é possível!");
             }
@@ -46,15 +42,16 @@ public class Field : MonoBehaviour
             int aux = gameManager.GetPlays();
             int playerTurn = gameManager.GetPlayersTurn();
             int turn = gameManager.GetTurn();
-            cats[aux] = Cat.Instantiate(this.cat,this.transform.Find("Cats").transform, playerTurn, turn);
+            cats[aux] = Cat.Instantiate(this.cat,this.transform.Find("Cats").transform, playerTurn, turn, GetNext());
             vertexes[aux] = index;
             UpdateNext();
-            // temporaryPositions.SetIndex(turn, next);
-            // temporaryPositions.SetSprite(playerTurn, next++);
             if(aux == 0){
                 board.connect(vertexes[0],vertexes[1]);
                 Cat.SetBrothers(cats[0],cats[1]);
-                board.VerifyCycle(index);
+                if(board.VerifyCycle(index)){
+                    cats[0].GetMiniCat().SetGlow(glow);
+                    cats[1].GetMiniCat().SetGlow(glow);
+                }
                 cats = new Cat[2];
             }
         } else {
@@ -81,6 +78,10 @@ public class Field : MonoBehaviour
 
     public GameObject GetNext() {
         return transform.GetChild(1).GetChild(next).gameObject;
+    }
+
+    public GameObject GetCurrent() {
+        return transform.GetChild(1).GetChild( next - 1 ).gameObject;
     }
 
     private void UpdateNext() {

@@ -25,10 +25,12 @@ public class Board : MonoBehaviour
     public void connect(int i, int j) {
         graph.addEdge(i,j);
     }
-    public void VerifyCycle(int vertex) {
+    public bool VerifyCycle(int vertex) {
         if(graph.findCycle(vertex)) {
             gameManager.SetCollapse();
+            return true;
         }
+        return false;
     }
 
     public BoardState GetState() {
@@ -38,6 +40,8 @@ public class Board : MonoBehaviour
         int field1;
         int field2;
         int field3;
+       
+        // Verificando colunas
         for( int i = 0; i < 3; i++) {
             baseField = i*3;
             field1 = fields[baseField].GetConquerer();
@@ -47,6 +51,8 @@ public class Board : MonoBehaviour
                 points[field1]++;
             }
         }
+
+        // Verificando linhas
         for( int i = 0; i < 3; i++) {
             baseField = i;
             field1 = fields[baseField].GetConquerer();
@@ -56,12 +62,19 @@ public class Board : MonoBehaviour
                 points[field1]++;
             }
         }
+
+        // Verificando diagonal principal
         field1 = fields[0].GetConquerer();
         field2 = fields[4].GetConquerer();
         field3 = fields[8].GetConquerer();
+        print(field1);
+        print(field2);
+        print(field3);
         if(field1 == field2 && field2 == field3 && field1 != -1){
             points[field1]++;
         }
+
+        //Verificando diagon secundária
         field1 = fields[2].GetConquerer();
         field2 = fields[4].GetConquerer();
         field3 = fields[6].GetConquerer();

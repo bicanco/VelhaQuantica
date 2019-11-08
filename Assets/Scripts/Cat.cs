@@ -4,10 +4,7 @@ public class Cat: MonoBehaviour
 {
     private int owner;
     private int index;
-    private GameObject catSprite;
-    private GameObject numberSprite;
-    // private SpriteRenderer catSprite;
-    // private SpriteRenderer numberSprite;
+    private CatImage catImage;
     private GameManager gameManager;
     private Field parent;
     public Cat brother;
@@ -17,20 +14,14 @@ public class Cat: MonoBehaviour
 
     void Awake(){
         parent = this.transform.parent.parent.GetComponent<Field>();
-        catSprite = this.transform.Find("catSprite").gameObject;
-        numberSprite = this.transform.Find("numberSprite").gameObject;
+        catImage = this.transform.Find("catImage").GetComponent<CatImage>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         board = GameObject.Find("board").GetComponent<Board>();
-        catSprite.SetActive(false);
-        numberSprite.SetActive(false);
-    }
-
-    void Start(){
+        catImage.gameObject.SetActive(false);
     }
 
     public void Conquer() {
-        catSprite.SetActive(true);
-        numberSprite.SetActive(true);
+        catImage.gameObject.SetActive(true);
         parent.SetAlreadyCollapsed(owner);
         parent.DeactivateTP();
         foreach (Cat cat in this.transform.parent.GetComponentsInChildren<Cat>())
@@ -45,17 +36,13 @@ public class Cat: MonoBehaviour
         }
     }
 
-    public void SetSprite(int index) {
-        parent.GetNext().transform.GetChild(0).GetComponent<SpriteRenderer>().sprite =  this.catSprites[index];
-        owner = index;
-        this.catSprite.GetComponent<SpriteRenderer>().sprite = this.catSprites[index];
-    }
-
-    public void SetIndex(int index){
-        parent.GetNext().transform.GetChild(1).GetComponent<SpriteRenderer>().sprite = this.numberSprites[index-1];
-        this.index = index;
-        this.numberSprite.GetComponent<SpriteRenderer>().sprite = this.numberSprites[index-1];
-        
+    private void SetSprite(int cat, int number, GameObject minicat) {
+        index = number;
+        owner = cat;
+        Sprite catSprite = catSprites[cat];
+        Sprite numberSprite = numberSprites[number-1];
+        catImage.SetSprite(catSprite, numberSprite);
+        minicat.GetComponent<CatImage>().SetSprite(catSprite, numberSprite);
     }
 
     public static void SetBrothers(Cat cat1, Cat cat2) {
@@ -72,11 +59,13 @@ public class Cat: MonoBehaviour
         }
         brother = null;
     }
-    public static Cat Instantiate(Cat cat, Transform position, int sprite, int index){
+    public static Cat Instantiate(Cat cat, Transform position, int sprite, int index, GameObject miniCat){
         Cat temp = Instantiate(cat, position, false);
-        temp.SetSprite(sprite);
-        temp.SetIndex(index);
+        temp.SetSprite(sprite, index, miniCat);
         return temp;
     }
-    
+
+    public CatImage GetMiniCat() {
+        return parent.GetComponent<Field>().GetCurrent().GetComponent<CatImage>();
+    }
 }

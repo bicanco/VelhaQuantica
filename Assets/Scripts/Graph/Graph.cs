@@ -46,12 +46,6 @@ public class Graph
         for(int i = 0; i < N; i++){
             visited[i] = false;
         }
-        // for(int i = 0; i < N; i++){
-        //     if(!visited[i])
-        //         if(dfs(i, visited, -1))
-        //             return true;
-        // }
-        // return false;
         return dfs(vertex, visited, -1);
     } 
 
