@@ -8,7 +8,7 @@ public class Board : MonoBehaviour
     {
         BlackVictory, OrangeVictory, Draw, NotFinished
     };
-    public Graph graph;
+    private Graph graph;
     private GameManager gameManager;
 
     void Start()
@@ -17,14 +17,17 @@ public class Board : MonoBehaviour
         graph = new Graph();
     }
 
-    void Update()
-    {
-        
-    }
-
-    public void connect(int i, int j) {
+    // adicionando aresta ao grafo
+    public void Connect(int i, int j) {
         graph.addEdge(i,j);
     }
+
+    // removendo aresta do grafo
+    public void Disconnect(int i, int j) {
+
+    }
+
+    // verifianco se há ciclo no grafo e acioando colapso se houver
     public bool VerifyCycle(int vertex) {
         if(graph.findCycle(vertex)) {
             gameManager.SetCollapse();
@@ -33,6 +36,7 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    // Verificando vitória, derrota ou jogo não finalizado
     public BoardState GetState() {
         Field[] fields = this.GetComponentsInChildren<Field>();
         int[] points = {0, 0};
@@ -67,20 +71,19 @@ public class Board : MonoBehaviour
         field1 = fields[0].GetConquerer();
         field2 = fields[4].GetConquerer();
         field3 = fields[8].GetConquerer();
-        print(field1);
-        print(field2);
-        print(field3);
         if(field1 == field2 && field2 == field3 && field1 != -1){
             points[field1]++;
         }
 
-        //Verificando diagon secundária
+        //Verificando diagonal secundária
         field1 = fields[2].GetConquerer();
         field2 = fields[4].GetConquerer();
         field3 = fields[6].GetConquerer();
         if(field1 == field2 && field2 == field3 && field1 != -1){
             points[field1]++;
         }
+
+        //Verificando se alguem ganhou
         if(points[0] > points[1]) {
             return BoardState.BlackVictory;
         }else if(points[0] < points[1]){

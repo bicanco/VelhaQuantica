@@ -26,7 +26,7 @@ public class Tutorial : MonoBehaviour
 
     public void NextText()
     {
-    	
+    	// selecionando a página do tutorial
     	switch (page.text)
     	{
     		case "1/10":

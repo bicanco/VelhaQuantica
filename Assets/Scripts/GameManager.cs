@@ -17,48 +17,48 @@ public class GameManager : MonoBehaviour
         board = GameObject.Find("board").GetComponent<Board>();
     }
 
-    void Update()
-    {
-        
-    }
 
+    // obtendo a jogada atual do jogador da vez
     public int GetPlays(){
         plays = !plays;
         return plays ? 1 : 0;
     }
 
+    // obtendo o jogador da vez
     public int GetPlayersTurn(){
         if(plays)
             playerOfTurn = !playerOfTurn;
         return playerOfTurn ? 1 : 0;
     }
 
+    // obtendo o turno do jogo
     public int GetTurn(){
         if(plays)
             turn++;
         return turn;
     }
 
+    // ativando preparação para colapsar
     public void SetCollapse(){
         collapse = true;
         plays = !plays;
     }
 
+    // finalizando o colapso
     public void EndCollapse() {
         Board.BoardState state = board.GetState();
+        //Verificando se há empate, vitória ou não acabou o jogo
         if(state == Board.BoardState.Draw){
-            print("draw");
             SceneManager.LoadScene(3);
         }else if(state == Board.BoardState.BlackVictory){
-            print("victory black");
             SceneManager.LoadScene(4);
         }else if(state == Board.BoardState.OrangeVictory){
-            print("victory orange");
             SceneManager.LoadScene(5);
         }
         collapse = false;
     }
 
+    // obtendo se há um calapso pronto para acontecer
     public bool GetCollapse(){
         return collapse;
     }

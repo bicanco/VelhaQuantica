@@ -8,7 +8,7 @@ public class Field : MonoBehaviour
 {
     public Cat cat;
     private GameManager gameManager;
-    private TemporaryPosition temporaryPositions;
+    private GameObject temporaryPositions;
     private static Cat[] cats = new Cat[2];
     private static int[] vertexes = new int[2];
     private static Board board;
@@ -24,32 +24,40 @@ public class Field : MonoBehaviour
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         board =  this.transform.GetComponentInParent<Board>();
-        temporaryPositions = this.GetComponentInChildren<TemporaryPosition>();
-        index = ArrayUtility.IndexOf(board.GetComponentsInChildren<Field>(),this);
+        temporaryPositions = this.transform.Find("TemporaryPositions").gameObject;
+        index = System.Array.FindIndex(board.GetComponentsInChildren<Field>(), (Field field) => {
+            return field == this;
+        });
     }
 
+    // Avisando jogador já jogou aqui
     void showbalaojogou()
     {
         balaojogou.enabled = true;
     }
 
+    // Escondendo aviso já jogou aqui
     void hidebalaojogou()
     {
         balaojogou.enabled = false;  
     }
 
+    // Avisando jogador local inválido
     void showbalaoinvalida()
     {
         balaoinvalida.enabled = true;
     }
 
+    // Escondendo aviso local inválido
     void hidebalaoinvalida()
     {
         balaoinvalida.enabled = false;  
     }
 
     private void OnMouseDown() {
+        // se houver ciclo para colapsar
         if(gameManager.GetCollapse()) {
+            // se for uma posição válida para colapsar
             if( vertexes[0] == index || vertexes[1] == index ) {
                 gameManager.GetPlays();
                 Cat[] cats = this.transform.GetComponentsInChildren<Cat>();
@@ -59,9 +67,9 @@ public class Field : MonoBehaviour
                 gameManager.EndCollapse();
             } else {
                 showbalaoinvalida();
-                print("Não é possível!");
             }
             return;
+        // se for uma posição válida para adicionar um gato
         } else if(PossibleToPlay()) {
             hidebalaojogou();
             hidebalaoinvalida();
@@ -72,7 +80,7 @@ public class Field : MonoBehaviour
             vertexes[aux] = index;
             UpdateNext();
             if(aux == 0){
-                board.connect(vertexes[0],vertexes[1]);
+                board.Connect(vertexes[0],vertexes[1]);
                 Cat.SetBrothers(cats[0],cats[1]);
                 if(board.VerifyCycle(index)){
                     cats[0].GetMiniCat().SetGlow(glow);
@@ -82,10 +90,10 @@ public class Field : MonoBehaviour
             }
         } else {
             showbalaojogou();
-            print("Já jogou aqui!");
         }
     }
 
+    // verificando se é possível jogar neste campo
     private bool PossibleToPlay() {
         bool samefield = false;
         if(cats[1] != null) {
@@ -94,23 +102,28 @@ public class Field : MonoBehaviour
         return !alreadyCollapsed && !samefield;
     }
 
+    // marcando o campo como já colapsado
     public void SetAlreadyCollapsed(int player) {
         conquerer = player;
         alreadyCollapsed = true;
     }
 
+    // obtendo que jogador  ganhou este espaço
     public int GetConquerer() {
         return alreadyCollapsed ? conquerer : -1;
     }
 
+    // obtendo proxima posição dos gatos pequenos
     public GameObject GetNext() {
         return transform.GetChild(1).GetChild(next).gameObject;
     }
 
+    // obtendo última posição em que foi adicionado um gato pequeno
     public GameObject GetCurrent() {
         return transform.GetChild(1).GetChild( next - 1 ).gameObject;
     }
 
+    // atualizando a próxima posição a ser preenchida
     private void UpdateNext() {
         next++;
     }
