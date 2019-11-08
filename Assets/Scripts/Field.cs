@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.UI;
 
 public class Field : MonoBehaviour
 {
@@ -15,12 +16,35 @@ public class Field : MonoBehaviour
     private int conquerer;
     private int next = 0;
     public int index;
+    public SpriteRenderer balaojogou;
+    public SpriteRenderer balaoinvalida;
+
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         board =  this.transform.GetComponentInParent<Board>();
         temporaryPositions = this.GetComponentInChildren<TemporaryPosition>();
         index = ArrayUtility.IndexOf(board.GetComponentsInChildren<Field>(),this);
+    }
+
+    void showbalaojogou()
+    {
+        balaojogou.enabled = true;
+    }
+
+    void hidebalaojogou()
+    {
+        balaojogou.enabled = false;  
+    }
+
+    void showbalaoinvalida()
+    {
+        balaoinvalida.enabled = true;
+    }
+
+    void hidebalaoinvalida()
+    {
+        balaoinvalida.enabled = false;  
     }
 
     private void OnMouseDown() {
@@ -39,10 +63,13 @@ public class Field : MonoBehaviour
                 //     cats[1].Conquer();
                 // }
             } else {
+                showbalaoinvalida();
                 print("Não é possível!");
             }
             return;
         } else if(PossibleToPlay()) {
+            hidebalaojogou();
+            hidebalaoinvalida();
             int aux = gameManager.GetPlays();
             int playerTurn = gameManager.GetPlayersTurn();
             int turn = gameManager.GetTurn();
@@ -58,6 +85,7 @@ public class Field : MonoBehaviour
                 cats = new Cat[2];
             }
         } else {
+            showbalaojogou();
             print("Já jogou aqui!");
         }
     }
