@@ -11,10 +11,14 @@ public class GameManager : MonoBehaviour
     private int turn = 0;
     private bool collapse = false;
     private Board board;
+    private SpriteRenderer turnSprite;
+    public Sprite[] catSprites = new Sprite[2];
 
     void Start()
     {
         board = GameObject.Find("board").GetComponent<Board>();
+        turnSprite = GameObject.Find("cat").GetComponent<SpriteRenderer>();
+        turnSprite.sprite = catSprites[0];
     }
 
 
@@ -26,8 +30,14 @@ public class GameManager : MonoBehaviour
 
     // obtendo o jogador da vez
     public int GetPlayersTurn(){
-        if(plays)
+        if(plays) {
             playerOfTurn = !playerOfTurn;
+            turnSprite.sprite = catSprites[playerOfTurn ? 1 : 0 ];
+        }else if(collapse){
+            turnSprite.sprite = catSprites[playerOfTurn ? 1 : 0 ];
+        } else {
+            turnSprite.sprite = catSprites[playerOfTurn ? 0 : 1 ];
+        }
         return playerOfTurn ? 1 : 0;
     }
 
