@@ -12,7 +12,7 @@ public class Cat: MonoBehaviour
     public delegate void genericFunction();
     private static List<genericFunction> showLater = new List<genericFunction>();
     [SerializeField()]
-    private float delayCollapse;
+    private float delayCollapse = 0;
     private static float delayCollapseForSeconds;
     public Sprite[] catSprites = new Sprite[2];
     public Sprite[] numberSprites = new Sprite[36];
