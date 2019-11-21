@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   brother: {fileID: 0}
+  delayCollapse: 0.5
   catSprites:
   - {fileID: 21300000, guid: 3363e0bfd2114974bbaf849c4aefb801, type: 3}
   - {fileID: 21300000, guid: a5da81c7b6f9d8947b4f0526bb752d6b, type: 3}

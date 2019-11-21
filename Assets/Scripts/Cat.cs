@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Cat: MonoBehaviour
 {
@@ -7,22 +9,45 @@ public class Cat: MonoBehaviour
     private Field parent;
     public Cat brother;
     private Board board;
+    public delegate void genericFunction();
+    private static List<genericFunction> showLater = new List<genericFunction>();
+    [SerializeField()]
+    private float delayCollapse;
+    private static float delayCollapseForSeconds;
     public Sprite[] catSprites = new Sprite[2];
     public Sprite[] numberSprites = new Sprite[36];
 
     void Awake(){
+        delayCollapseForSeconds = delayCollapse;
         parent = this.transform.parent.parent.GetComponent<Field>();
         catImage = this.transform.Find("catImage").GetComponent<CatImage>();
         board = GameObject.Find("board").GetComponent<Board>();
         catImage.gameObject.SetActive(false);
     }
 
-    // Causando colapso do ciclo
-    public void Conquer() {
+    private void AddToShowLater(genericFunction toDestroy){
+        showLater.Add(toDestroy);
+    }
+
+    public static IEnumerator ExecuteQueuedShowLater(genericFunction onEnd){
+        foreach(genericFunction showCatCollapse in Cat.showLater) {
+            yield return new WaitForSeconds(delayCollapseForSeconds);
+            showCatCollapse();
+        }
+        Cat.showLater = new List<genericFunction>();
+        onEnd();
+    }
+
+    private void showCollapse(){
         // Acionando gato que deve ocupar o campo e desativando gatos pequenos
         catImage.gameObject.SetActive(true);
         parent.SetAlreadyCollapsed(owner);
         parent.DeactivateTP();
+    }
+
+    // Causando colapso do ciclo
+    public void Conquer() {
+        AddToShowLater(showCollapse);
 
         // Propagando o colapso dos gatos conectados
         Transform cats = parent.transform.GetChild(0);

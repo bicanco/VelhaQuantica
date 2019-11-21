@@ -12,7 +12,10 @@ public class GameManager : MonoBehaviour
     private bool collapse = false;
     private Board board;
     private SpriteRenderer turnSprite;
-    public Sprite[] catSprites = new Sprite[2];
+    [SerializeField()]
+    private float delayResult = 0;
+    [SerializeField()]
+    private Sprite[] catSprites = new Sprite[2];
 
     void Start()
     {
@@ -65,13 +68,13 @@ public class GameManager : MonoBehaviour
     // Esperando um tempo para mudar de cena se for necessário
     private IEnumerator ChangeScene(Board.BoardState state) {
        if(state == Board.BoardState.Draw){
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(delayResult);
             SceneManager.LoadScene(3);
         }else if(state == Board.BoardState.BlackVictory){
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(delayResult);
             SceneManager.LoadScene(4);
         }else if(state == Board.BoardState.OrangeVictory){
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(delayResult);
             SceneManager.LoadScene(5);
         }
     }

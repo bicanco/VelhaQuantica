@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b34e133bad9c354fb19747deae53ddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delayResult: 1
   catSprites:
   - {fileID: 21300000, guid: 3363e0bfd2114974bbaf849c4aefb801, type: 3}
   - {fileID: 21300000, guid: a5da81c7b6f9d8947b4f0526bb752d6b, type: 3}

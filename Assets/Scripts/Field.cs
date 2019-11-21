@@ -62,10 +62,9 @@ public class Field : MonoBehaviour
                 gameManager.GetPlays();
                 Cat[] temp = this.transform.GetComponentsInChildren<Cat>();
                 int toCollapse = temp.Length - 1;
-                transform.Find("TemporaryPositions").gameObject.SetActive(false);
                 temp[toCollapse].brother.RemoveBrother();
                 temp[toCollapse].Conquer();
-                gameManager.EndCollapse();
+                StartCoroutine(Cat.ExecuteQueuedShowLater(gameManager.EndCollapse));
             } else {
                 showbalaoinvalida();
             }
