@@ -26,12 +26,4 @@ public class Menu : MonoBehaviour
 
 	}
 
-	//encerrando o jogo
-	public void Sair ()
-	{
-		Application.Quit();
-	}
-
-
-
 }
